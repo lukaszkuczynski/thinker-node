@@ -1,11 +1,15 @@
 {
-  "name": "thinker node",
+  "name": "thinker-node",
   "version": "1.0.0",
   "description": "Thinker app in Node.js",
   "private": true,
   "main": "start.js",
   "scripts": {
-    "start": "node --use_strict start.js"
+    "start": "node --use_strict start.js",
+    "test": "mocha"
+  },
+  "dependencies": {
+    "chai" : "~3.5.0"
   },
   "author": "Lukasz Kuczynski <kuczynskilukasz@gmail.com>"
 }
