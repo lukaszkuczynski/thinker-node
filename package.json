@@ -5,13 +5,13 @@
   "private": true,
   "main": "start.js",
   "scripts": {
-    "start": "node --use_strict start.js",
+    "start": "node start.js",
     "test": "mocha"
   },
   "dependencies": {
     "chai" : "~3.5.0",
     "express" : "~4.14.0",
-    "node-couchdb" : "1.1.0"
+    "cradle" : "0.7.1"
   },
   "author": "Lukasz Kuczynski <kuczynskilukasz@gmail.com>"
 }

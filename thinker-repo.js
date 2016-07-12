@@ -1,12 +1,17 @@
-"use strict";
-
-const NodeCouchDb = require('node-couchdb');
-const fs = require('fs');
+const 	
+		fs = require('fs'),
+		cradle = require('cradle')
+		;
 
 var ThinkerRepo = function(config) {
-	// this.config = config;
-	this.couch = new NodeCouchDb(config.connection);
-	this.dbname = config.dbname;
+	this.couchdb = new(cradle.Connection)(
+		config.connection.host, config.connection.port, {
+			auth: {
+				username : config.connection.auth.user,
+				password: config.connection.auth.pass
+			}
+		}
+	).database(config.dbname);
 }
 
 
@@ -15,43 +20,15 @@ ThinkerRepo.prototype.create = function(document) {
 }
 
 ThinkerRepo.prototype.readLast = function(lastNumber) {
-	console.log(this.couch);
-	this.couch.get(this.dbname, "time/view", {}).then((data, headers, status) => {
-	    // data is json response 
-	    // headers is an object with all response headers 
-	    // status is statusCode number 
-	    console.log(data)
-	}, err => {
-		console.log(err)
-	    // either request error occured 
-	    // ...or err.code=EDOCMISSING if document is missing 
-	    // ...or err.code=EUNKNOWN if statusCode is unexpected 
+	this.couchdb.view("time/view", {'descending' : true, 'limit' : lastNumber}, function(err,doc) {
+		if (err) {
+			console.log('error');
+			console.dir(err);
+		} else {
+			console.dir(doc);
+		}
 	});
-
-	return [1,2,3];
 }
 
 module.exports = ThinkerRepo;
 
-
-
-
-/**
-
-const couch = new NodeCouchDb({
-
-});
-
-couch.get("thoughts").then((data, headers, status) => {
-    // data is json response 
-    // headers is an object with all response headers 
-    // status is statusCode number 
-    console.log(data)
-}, err => {
-	console.log(err)
-    // either request error occured 
-    // ...or err.code=EDOCMISSING if document is missing 
-    // ...or err.code=EUNKNOWN if statusCode is unexpected 
-});
-
-**/
