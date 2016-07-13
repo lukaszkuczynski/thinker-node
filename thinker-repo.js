@@ -19,13 +19,15 @@ ThinkerRepo.prototype.create = function(document) {
 	console.log('create '+document)
 }
 
-ThinkerRepo.prototype.readLast = function(lastNumber) {
-	this.couchdb.view("time/view", {'descending' : true, 'limit' : lastNumber}, function(err,doc) {
+ThinkerRepo.prototype.readLast = function(lastNumber, callback) {
+	this.couchdb.view("time/view", {'descending' : true, 'limit' : lastNumber}, function(err,docs) {
 		if (err) {
 			console.log('error');
 			console.dir(err);
+			callback(err, null)
 		} else {
-			console.dir(doc);
+			// success
+			callback(null, docs);
 		}
 	});
 }

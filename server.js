@@ -14,8 +14,9 @@ var config = JSON.parse(configBuf);
 
 var couchConfig = config.couch;
 var thinkerRepo = new ThinkerRepo(couchConfig);
-var last = thinkerRepo.readLast(10);
-console.log(last);
+
+// var last = thinkerRepo.readLast(10);
+// console.log(last);
 
 
 var app = express()
@@ -32,15 +33,23 @@ app.get('/health', function(req, res) {
 
 app.post('/api/thought', function(req, res) {
   // thinkerRepo.create(1)
-  console.log('creating with body as follows');
+  console.log('creating thought with body as follows');
   console.log(req.body);
   res.send('created');
 })
 
 app.get('/api/thought/last/:lastno', function(req, res) {	
-  var no = req.params.lastno;
-  console.log(no);
-  res.send(no)
+  var no = req.params.lastno;  
+  console.log('querying for last '+no+' thoughts');
+  var lastdocs = thinkerRepo.readLast(no, function(err, docs){
+  	if (!err) {
+  		res.send(docs);
+  	} else {
+  		console.log('error '+err);
+  		res.status(500).send('error '+err);
+  	}
+  });
+  
 })
 
 app.listen(3000)
