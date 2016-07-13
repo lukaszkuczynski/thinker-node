@@ -2,7 +2,9 @@ const
   env = process.env,
   express = require('express'),
   ThinkerRepo = require('./thinker-repo'),
-  fs = require('fs');
+  fs = require('fs'),
+  bodyParser = require('body-parser')
+;
 
 
 var filename = "./secret.json";
@@ -17,6 +19,8 @@ console.log(last);
 
 
 var app = express()
+app.use( bodyParser.json() );
+app.use(bodyParser.urlencoded({extended: true})); 
 
 app.get('/', function (req, res) {
   res.send('Hello World');
@@ -26,9 +30,17 @@ app.get('/health', function(req, res) {
 	res.send('OK');
 });
 
-app.get('/api/create', function(req, res) {
-  thinkerRepo.create(1)
-  res.send('created')
+app.post('/api/thought', function(req, res) {
+  // thinkerRepo.create(1)
+  console.log('creating with body as follows');
+  console.log(req.body);
+  res.send('created');
+})
+
+app.get('/api/thought/last/:lastno', function(req, res) {	
+  var no = req.params.lastno;
+  console.log(no);
+  res.send(no)
 })
 
 app.listen(3000)
