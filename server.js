@@ -11,12 +11,9 @@ var filename = "./secret.json";
 var configBuf = fs.readFileSync(filename, "utf8");
 
 var config = JSON.parse(configBuf);
-
 var couchConfig = config.couch;
+// var couchConfig = config.couchlocal;
 var thinkerRepo = new ThinkerRepo(couchConfig);
-
-// var last = thinkerRepo.readLast(10);
-// console.log(last);
 
 
 var app = express()
@@ -32,10 +29,17 @@ app.get('/health', function(req, res) {
 });
 
 app.post('/api/thought', function(req, res) {
-  // thinkerRepo.create(1)
-  console.log('creating thought with body as follows');
-  console.log(req.body);
-  res.send('created');
+  	var thought_body = req.body;
+	console.log('creating thought with body as follows');
+	console.log(thought_body);
+	thought_body.timestamp = new Date();
+	thinkerRepo.create(thought_body, function(err, result) {
+		if (!err) {
+			res.status(200).send(result);
+		} else {
+			res.status(500).send(err);
+		}
+	});
 })
 
 app.get('/api/thought/last/:lastno', function(req, res) {	
