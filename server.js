@@ -20,8 +20,11 @@ var app = express()
 app.use( bodyParser.json() );
 app.use(bodyParser.urlencoded({extended: true})); 
 
+app.use(express.static('public'));
+
+
 app.get('/', function (req, res) {
-  res.send('Hello World');
+  res.sendFile('index.html');
 });
 
 app.get('/health', function(req, res) {

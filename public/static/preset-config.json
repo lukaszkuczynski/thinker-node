@@ -1,0 +1,80 @@
+{
+    "presets": [
+        
+             
+        {
+            "name": "thought",
+            "indexName": "thinker",
+            "typeName": "thought",
+            "elements": [
+                {
+                    "type": "multi",
+                    "id": "text",
+                    "label": "text.key"
+                },
+                {
+                    "type": "tags",
+                    "id": "tags",
+                    "label": "tags.key"
+                },
+                {
+                    "type": "text",
+                    "id": "link",
+                    "label": "link.key"
+                },
+                {
+                    "type": "multi",
+                    "id": "code",
+                    "label": "code.key"
+                }
+            ]
+        },
+        {
+            "name": "bug",
+            "indexName": "thinker",
+            "typeName": "bug",
+            "elements": [
+                {
+                    "type": "text",
+                    "id": "bug_name",
+                    "label": "bug_name.key"
+                },
+                {
+                    "type": "multi",
+                    "id": "text",
+                    "label": "text.key"
+                },
+                {
+                    "type": "select",
+                    "options": ["start", "repeat", "research", "environment",  "coding", "checking", "resolve"],
+                    "id": "status",
+                    "label": "status.key"
+                },
+                {
+                    "type": "tags",
+                    "id": "tags",
+                    "label": "tags.key"
+                }
+            ]
+        },   
+        {
+            "name": "todo",
+            "indexName": "thinker",
+            "typeName": "todo",
+            "elements": [
+                {
+                    "type": "multi",
+                    "id": "text",
+                    "label": "text.key"
+                },
+                {
+                    "type": "tags",
+                    "id": "tags",
+                    "label": "tags.key"
+                }
+            ]
+        }
+
+
+    ]
+}

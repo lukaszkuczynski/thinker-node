@@ -1,0 +1,113 @@
+<html>
+<head>
+    <title></title>
+
+    
+		<script src="/static/js/vendor/jquery-2.1.4.min.js"></script>
+		<script src="/static/js/vendor/elasticsearch.min.js"></script>
+		<script src="/static/js/vendor/jquery.dataTables.min.js"></script>
+		<script src="/static/js/vendor/dataTables.tableTools.js"></script>
+		<script src="/static/js/vendor/underscore-min.js"></script>
+		<script src="/static/js/vendor/moment.min.js"></script>
+		<script src="/static/js/vendor/couch.js"></script>
+
+		<script src="/static/js/bug-form-extras.js"></script>
+		<script src="/static/js/thought-form-extras.js"></script>
+
+		<script src="/static/js/thinker.js"></script>
+		<script src="/static/js/form.js"></script>
+		<script src="/static/js/restdao.js"></script>
+		<script src="/static/js/viewer.js"></script>
+		<script src="/static/js/dataTablesUtils.js"></script>
+
+
+		<script type="text/javascript">
+			$(document).ready(function() {
+				// elastic init
+				//dao.init('/static/application-config-couch.json', function(e) { 
+				dao.init('/static/application-config-rest.json', 
+				function(e) { 
+					viewer.showError('error while connecting to elastic');
+					console.error(e);
+				},
+				function() {
+					thinker.loadApp('/static/preset-config.json','elements','preset');
+					prepareEvents();
+					viewer.init(10, 'lastDocs');
+				}
+				);
+			});
+
+	
+
+			function prepareEvents() {
+				$('select#preset').change(function() {
+					var val = $(this).val();
+					thinker.loadPreset(val);
+				});
+				$('button#refresh').click(function(e){
+					e.preventDefault();
+					viewer.refresh();
+				});
+			}
+			
+
+
+		</script>
+
+		<link rel="stylesheet" type="text/css" href="/static/css/style.css">
+		<link rel="stylesheet" type="text/css" href="/static/css/vendor/jquery.dataTables.min.css">
+		<link rel="stylesheet" type="text/css" href="/static/css/vendor/dataTables.tableTools.css">
+		<link rel="stylesheet" type="text/css" href="/static/css/vendor/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="/static/css/vendor/bootstrap-theme.min.css">
+		
+
+</head>
+<body>
+
+<!--<img src="/app/static/images/logo.png" alt="Logo" />-->
+
+<body class="container">
+	<div class="alert alert-danger" id="error-msg" style="display:none"></div>
+	<div class="alert alert-info " id="info-msg" style="display:none"></div>
+
+<div id="menu">
+		<a class="btn btn-default" href="index.html"> form </a>
+		<a class="btn btn-default" href="search.html"> search </a>
+	</div>
+
+	<div class="row">
+
+		<div class="col-md-6">
+			<select id="preset" > 
+			</select>
+
+			<form class="thinker">
+				<div id="elements">
+					
+				</div>
+				<button class="btn btn-danger" id="clear">clear</button>
+				<button class="btn btn-success" id="save">save</button>
+				<button class="btn btn-default" id="refresh">refresh</button>
+			</form>
+		</div>
+
+		<div class="col-md-6">
+			<div>
+				<table id="lastDocs" class="display">
+				</table>
+			</div>
+			<div id="stats">
+				<h1> stats </h1>
+				<ul class="list-group">
+					<li class="list-group-item">Last time <span class="label label-info" id="lastTime"></span></li>
+					<li class="list-group-item">Total elements <span id="total" class="label label-success"></span></li>
+				</ul>
+			</div>
+
+		</div>
+	</div>
+
+
+</body>
+</html>
