@@ -1,22 +1,33 @@
 const 	
-		fs = require('fs'),
-		cradle = require('cradle')
-		;
+	fs = require('fs'),
+	cradle = require('cradle'),
+	process = require('process')
 
-var ThinkerRepo = function(config) {
-	if (!config.connection.auth) {
+;
+
+const COUCH_DB_NAME = 'thoughts';
+
+var ThinkerRepo = function() {
+	authUsername = process.env.COUCHDB_AUTH_USERNAME || "";
+	authPassword = process.env.COUCHDB_AUTH_PASSWORD || "";
+	host = process.env.COUCHDB_HOST || 'localhost';
+	port = process.env.COUCHDB_PORT || 5984;
+
+	console.log('connecting to couch at '+host)
+
+	if (authUsername && authPassword) {
 		this.couchdb = new(cradle.Connection)(
-			config.connection.host, config.connection.port
-		).database(config.dbname);
-	} else {
-		this.couchdb = new(cradle.Connection)(
-			config.connection.host, config.connection.port, {
+			host, port, {
 				auth: {
-					username : config.connection.auth.user,
-					password: config.connection.auth.pass
+					username : authUsername,
+					password : authPassword
 				}
 			}
-		).database(config.dbname);
+		).database(COUCH_DB_NAME);
+	} else {
+		this.couchdb = new(cradle.Connection)(
+			host, port
+		).database(COUCH_DB_NAME);
 	}	
 }
 
