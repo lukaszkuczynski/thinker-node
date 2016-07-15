@@ -6,15 +6,7 @@ const
   bodyParser = require('body-parser')
 ;
 
-
-var filename = "./secret.json";
-var configBuf = fs.readFileSync(filename, "utf8");
-
-var config = JSON.parse(configBuf);
-var couchConfig = config.couch;
-// var couchConfig = config.couchlocal;
-var thinkerRepo = new ThinkerRepo(couchConfig);
-
+var thinkerRepo = new ThinkerRepo();
 
 var app = express()
 app.use( bodyParser.json() );
@@ -59,12 +51,7 @@ app.get('/api/thought/last/:lastno', function(req, res) {
   
 })
 
-app.listen(3000)
-
 
 app.listen(env.NODE_PORT || 3000, env.NODE_IP || 'localhost', function () {
   console.log(`Application worker ${process.pid} started...`);
 });
-
-
-
