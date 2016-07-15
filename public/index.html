@@ -23,9 +23,7 @@
 
 		<script type="text/javascript">
 			$(document).ready(function() {
-				// elastic init
-				//dao.init('/static/application-config-couch.json', function(e) { 
-				dao.init('/static/application-config-rest.json', 
+				dao.init('/api', 
 				function(e) { 
 					viewer.showError('error while connecting to elastic');
 					console.error(e);

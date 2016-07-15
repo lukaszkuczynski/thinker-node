@@ -1,5 +1,0 @@
-{
-	"elastic" : {
-		"host" : "http://localhost:9200"
-	}
-}

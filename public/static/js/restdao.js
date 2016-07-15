@@ -4,20 +4,9 @@ function RestDao() {
 
 	this.url = 'undefined_url';
 
-	this.init = function (configUrl, errorCallback, okCallback) {
-		// check if couchdb is alive
-		$.ajax({
-			'url': configUrl,
-			'success': function(config) {
-				var hostUrl = config.rest.host;
-				_this.url = hostUrl;
-				okCallback();
-
-			},
-			'error': function(e) {
-				errorCallback(e);
-			}
-		});
+	this.init = function (api_url, errorCallback, okCallback) {
+		_this.url = api_url;
+		okCallback();
 	};
 
 	this.send = function(msg, meta) {
