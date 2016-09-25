@@ -3,19 +3,39 @@ const
   express = require('express'),
   ThinkerRepo = require('./thinker-repo'),
   fs = require('fs'),
-  bodyParser = require('body-parser')
+  bodyParser = require('body-parser'),
+  passport = require('passport'),
+  LocalStrategy = require('passport-local').Strategy;
+
 ;
+
+
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    if ((username == 'admin') && (password == 'pokpokpok')) {
+      var user = {
+        name: username
+      }
+      return done(null, user);
+    } else {
+      return done(null, false, { message: 'Incorrect username or password.' });
+    }
+  }
+));
 
 var thinkerRepo = new ThinkerRepo();
 
 var app = express()
 app.use( bodyParser.json() );
 app.use(bodyParser.urlencoded({extended: true})); 
-
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.static('public'));
 
 
-app.get('/', function (req, res) {
+app.get('/', 
+  passport.authenticate('local'),
+  function (req, res) {
   res.sendFile('index.html');
 });
 

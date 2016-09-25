@@ -9,10 +9,12 @@
     "test": "mocha"
   },
   "dependencies": {
-    "chai" : "~3.5.0",
-    "express" : "~4.14.0",
-    "body-parser" : "1.15.2",
-    "cradle" : "0.7.1"
+    "body-parser": "1.15.2",
+    "chai": "~3.5.0",
+    "cradle": "0.7.1",
+    "express": "~4.14.0",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0"
   },
   "author": "Lukasz Kuczynski <kuczynskilukasz@gmail.com>"
 }
