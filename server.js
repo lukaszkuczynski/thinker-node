@@ -5,14 +5,25 @@ const
   fs = require('fs'),
   bodyParser = require('body-parser'),
   passport = require('passport'),
-  LocalStrategy = require('passport-local').Strategy;
+  BasicStrategy = require('passport-http').BasicStrategy
 
 ;
 
 
-passport.use(new LocalStrategy(
+var thinkerRepo = new ThinkerRepo();
+
+var app = express();
+
+app.use( bodyParser.json() );
+app.use(bodyParser.urlencoded({extended: true})); 
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(passport.authenticate('basic'));
+app.use(express.static(__dirname + '/public'));
+
+passport.use(new BasicStrategy(
   function(username, password, done) {
-    if ((username == 'admin') && (password == 'pokpokpok')) {
+    if ((username == 'pok') && (password == 'pok')) {
       var user = {
         name: username
       }
@@ -23,21 +34,14 @@ passport.use(new LocalStrategy(
   }
 ));
 
-var thinkerRepo = new ThinkerRepo();
-
-var app = express()
-app.use( bodyParser.json() );
-app.use(bodyParser.urlencoded({extended: true})); 
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(express.static('public'));
-
-
-app.get('/', 
-  passport.authenticate('local'),
-  function (req, res) {
-  res.sendFile('index.html');
+passport.serializeUser(function(user, done) {
+  done(null, user);
 });
+
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
+});
+
 
 app.get('/health', function(req, res) {
 	res.send('OK');
